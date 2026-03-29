@@ -2,23 +2,20 @@
 
 ## Project Identity
 
-This workspace is a **CTEM (Continuous Threat Exposure Management) Kit** — a prompt-driven automation toolkit for the Gartner CTEM five-phase framework. It contains NO code. All logic is expressed through Markdown-based instructions, skills, and agent definitions.
+This workspace is a **CTEM (Continuous Threat Exposure Management) Kit** — a prompt-driven automation toolkit for the Gartner CTEM five-phase framework. It contains NO code. All logic is expressed through Markdown-based instructions, skills, and prompt definitions.
 
-## CTEM Five Phases (Strict Order)
+## Activation Rule
 
-| # | Phase | Skill | Purpose |
-|---|-------|-------|---------|
-| 1 | Scoping | `/ctem-scoping` | Define target scope, asset inventory, business criticality |
-| 2 | Discovery | `/ctem-discovery` | Identify exposures: vulnerabilities, misconfigurations, attack surface gaps |
-| 3 | Prioritization | `/ctem-prioritization` | Rank exposures by exploitability, business impact, and context |
-| 4 | Validation | `/ctem-validation` | Verify exploitability, filter false positives, confirm attack paths |
-| 5 | Mobilization | `/ctem-mobilization` | Generate remediation plans, assign actions, track resolution |
+The CTEM rules below apply **only when the user explicitly enters a CTEM context**:
 
-## Global Rules (Always Apply)
+- Invoking `/ctem-flow` or any `/ctem-*` skill
+- Explicitly mentioning a CTEM session (e.g., "start new session", "resume", "phase complete")
 
-1. **Phase State Tracking**: All phase transitions MUST be recorded in `ctem-state.md` at the project root. Read it before starting any phase. Update it after completing any phase.
-2. **Phase Independence**: Each skill handles ONLY its own phase. It does NOT manage workflow transitions or decide what comes next.
-3. **Workflow Control**: Phase sequencing, backtracking, and transition decisions are handled EXCLUSIVELY by the `@ctem-coordinator` agent OR by the user manually.
-4. **Backtrack Support**: The workflow supports non-linear phase transitions. Validation may trigger a return to Discovery. The coordinator manages this logic.
-5. **Tool Integration**: Skills may instruct the user to run external security tools (nmap, nuclei, nessus, etc.) and will parse the pasted output. Skills do NOT execute tools directly.
-6. **Language**: All prompt content is in English.
+**Non-CTEM requests are NOT subject to the rules below.** Respond with normal Copilot behavior.
+
+## Global Rules (CTEM Mode)
+
+1. **Workflow Ownership**: Phase sequencing, backtracking, and transition decisions are managed by `/ctem-flow`. Five-phase definitions, backtrack logic, and state update details live in `ctem-flow.prompt.md` — not repeated here.
+2. **State File Governance**: Read/write rules for `ctem-state.md` are defined in `ctem-state-protocol.instructions.md` — not repeated here.
+3. **Tool Integration**: Skills instruct the user to run external tools (nmap, nuclei, nessus, etc.) and parse pasted output. Skills do NOT execute tools directly.
+4. **Language**: All prompt content is in English.

@@ -1,6 +1,6 @@
 # CTEM Kit
 
-A prompt-engineering-only toolkit that automates the **Gartner CTEM (Continuous Threat Exposure Management)** five-phase workflow using AI agent skills in GitHub Copilot.
+A prompt-engineering-only toolkit that automates the **Gartner CTEM (Continuous Threat Exposure Management)** five-phase workflow using AI skills and prompts in GitHub Copilot.
 
 **Zero code. Pure Markdown. Fully AI-driven.**
 
@@ -14,6 +14,17 @@ CTEM (Continuous Threat Exposure Management) is a five-phase framework introduce
 4. **Validation** — Verify exposures are real and exploitable, filter false positives
 5. **Mobilization** — Generate remediation plans, assign actions, track resolution
 
+## Architecture: Prompt + Skills + Data
+
+| Layer | Component | Purpose |
+|-------|-----------|---------|
+| Global Rules | `copilot-instructions.md` | Activation gate + minimal CTEM-mode rules (auto-loaded every conversation) |
+| Flow Control | `/ctem-flow` (prompt) | Session lifecycle, phase transitions, backtrack checks, report generation |
+| Phase Execution | `/ctem-*` (skills) | Independent, phase-specific analysis logic |
+| State Governance | `ctem-state-protocol.instructions.md` | Read/write format rules for `ctem-state.md` (auto-loaded when state file is accessed) |
+| State & Data | `ctem-state.md` | Single source of truth for session progress |
+| Reports | `reports/` | Session reports (`sessions/`) and asset profiles (`assets/`) |
+
 ## Quick Start
 
 ### Prerequisites
@@ -23,15 +34,14 @@ CTEM (Continuous Threat Exposure Management) is a five-phase framework introduce
 
 ### How to Use
 
-#### Option A: Full Automated Workflow (Recommended)
+#### Option A: Guided Workflow (Recommended)
 
 1. Open this project in VS Code
-2. Open Copilot Chat and select the **`@ctem-coordinator`** agent
-3. Tell it your target:
+2. Open Copilot Chat and type:
    ```
-   @ctem-coordinator Start a new CTEM session for target 192.168.1.0/24
+   /ctem-flow Start a new CTEM session for target 192.168.1.0/24
    ```
-4. The coordinator will guide you through all five phases, handle transitions, and manage backtracking automatically
+3. The flow controller will read `ctem-state.md`, guide you through all five phases, handle transitions, and manage backtracking
 
 #### Option B: Run Individual Phases
 
@@ -45,35 +55,52 @@ You can run any phase independently as a slash command:
 | `/ctem-validation` | 4. Validation | Verify exploitability, filter false positives |
 | `/ctem-mobilization` | 5. Mobilization | Generate remediation plans and action items |
 
-> **Note**: When running phases individually, you are responsible for managing the phase order and updating `ctem-state.md`. The coordinator handles this for you in Option A.
+> **Note**: When running phases individually, you are responsible for managing the phase order and updating `ctem-state.md`. The `/ctem-flow` prompt handles this for you in Option A.
 
 #### Option C: Resume a Session
 
 If you stopped mid-session:
 
-1. Open Copilot Chat → select **`@ctem-coordinator`**
-2. Say:
+1. Open Copilot Chat
+2. Type:
    ```
-   @ctem-coordinator Resume the current session
+   /ctem-flow Resume
    ```
-3. The coordinator reads `ctem-state.md` and picks up where you left off
+3. The flow controller reads `ctem-state.md` and picks up where you left off
+
+#### Common Commands
+
+| What You Want | What to Type |
+|---------------|-------------|
+| Start new session | `/ctem-flow Start new session for <target>` |
+| Continue | `/ctem-flow Resume` |
+| After a phase completes | `/ctem-flow Phase complete, next step?` |
+| Redo a phase | `/ctem-flow Go back to Validation` |
+| Override recommendation | `/ctem-flow Skip to Mobilization` |
+| Session summary | `/ctem-flow Summary` |
 
 ## Project Structure
 
 ```
 ctem-kit/
 ├── .github/
-│   ├── copilot-instructions.md          # Global rules for all CTEM interactions
+│   ├── copilot-instructions.md          # Activation gate + CTEM-mode global rules
 │   ├── instructions/
-│   │   └── ctem-state-protocol.instructions.md  # State file read/write rules
-│   ├── agents/
-│   │   └── ctem-coordinator.agent.md    # Workflow coordinator (manages phases)
+│   │   └── ctem-state-protocol.instructions.md  # State file read/write format rules
+│   ├── prompts/
+│   │   └── ctem-flow.prompt.md          # Workflow controller (session lifecycle, backtrack, reports)
 │   └── skills/
 │       ├── ctem-scoping/SKILL.md        # Phase 1: Scoping
 │       ├── ctem-discovery/SKILL.md      # Phase 2: Discovery
 │       ├── ctem-prioritization/SKILL.md # Phase 3: Prioritization
 │       ├── ctem-validation/SKILL.md     # Phase 4: Validation
 │       └── ctem-mobilization/SKILL.md   # Phase 5: Mobilization
+├── reports/
+│   ├── README.md                        # Reports directory guide
+│   ├── sessions/
+│   │   └── TEMPLATE.md                  # Per-session report template
+│   └── assets/
+│       └── TEMPLATE.md                  # Per-machine asset profile template
 ├── ctem-state.md                        # Session state tracking (AI-managed)
 └── README.md                            # This file
 ```
@@ -82,15 +109,17 @@ ctem-kit/
 
 | File | Role | Who Uses It |
 |------|------|-------------|
-| `copilot-instructions.md` | Defines CTEM context and global rules. Automatically loaded in every conversation. | AI (auto-loaded) |
-| `ctem-state-protocol.instructions.md` | Rules for reading/writing `ctem-state.md`. Loaded when state file is accessed. | AI (auto-loaded when relevant) |
-| `ctem-coordinator.agent.md` | The workflow manager. Decides phase order, handles backtracking, tracks progress. Does NOT do analysis. | User invokes via `@ctem-coordinator` |
-| `ctem-scoping/SKILL.md` | Phase 1 logic. Defines scope, inventories assets, maps attack surface. | User invokes via `/ctem-scoping` or coordinator delegates |
-| `ctem-discovery/SKILL.md` | Phase 2 logic. Parses scan outputs, identifies exposures. | User invokes via `/ctem-discovery` or coordinator delegates |
-| `ctem-prioritization/SKILL.md` | Phase 3 logic. Scores and ranks exposures. | User invokes via `/ctem-prioritization` or coordinator delegates |
-| `ctem-validation/SKILL.md` | Phase 4 logic. Verifies exploitability using three-module approach (reasoning / generation / parsing). | User invokes via `/ctem-validation` or coordinator delegates |
-| `ctem-mobilization/SKILL.md` | Phase 5 logic. Generates fix plans and tracks remediation. | User invokes via `/ctem-mobilization` or coordinator delegates |
-| `ctem-state.md` | Live session state. Tracks which phases are done, findings summaries, and backtrack history. | AI reads/writes; user can inspect |
+| `copilot-instructions.md` | Activation gate: CTEM rules only apply when user enters CTEM context. Contains minimal global rules; delegates details to flow and protocol. | AI (auto-loaded) |
+| `ctem-state-protocol.instructions.md` | State file format rules: how to read/write `ctem-state.md`, prerequisite checks. Does NOT contain backtrack logic or report timing. | AI (auto-loaded when `ctem-state.md` is accessed) |
+| `ctem-flow.prompt.md` | Workflow controller: session lifecycle, phase transitions, backtrack checks, session start protection, and report generation. Single entry point. | User invokes via `/ctem-flow` |
+| `ctem-scoping/SKILL.md` | Phase 1 logic. Defines scope, inventories assets, maps attack surface. | User invokes via `/ctem-scoping` |
+| `ctem-discovery/SKILL.md` | Phase 2 logic. Parses scan outputs, identifies exposures. | User invokes via `/ctem-discovery` |
+| `ctem-prioritization/SKILL.md` | Phase 3 logic. Scores and ranks exposures. | User invokes via `/ctem-prioritization` |
+| `ctem-validation/SKILL.md` | Phase 4 logic. Verifies exploitability using three-module approach (reasoning / generation / parsing). | User invokes via `/ctem-validation` |
+| `ctem-mobilization/SKILL.md` | Phase 5 logic. Generates fix plans and tracks remediation. | User invokes via `/ctem-mobilization` |
+| `ctem-state.md` | Live session state. Tracks which phases are done, findings summaries, and backtrack history. Reset when starting a new session (with protection). | AI reads/writes; user can inspect |
+| `reports/sessions/TEMPLATE.md` | Session report template. Copied and filled after each CTEM round completes. | AI generates; user can inspect |
+| `reports/assets/TEMPLATE.md` | Asset profile template. One per machine, created/updated when all five phases complete. | AI updates; user can inspect |
 
 ## Backtracking
 
@@ -98,7 +127,7 @@ Unlike linear workflows, CTEM requires **non-linear phase transitions**. For exa
 
 ### How It Works
 
-- After each phase, the coordinator performs a **Backtrack Check**
+- After each phase, `/ctem-flow` performs a **Backtrack Check**
 - It compares new findings against previous phase outputs in `ctem-state.md`
 - If backtracking is needed, it recommends which phase to return to and why
 - The user can also manually request a backtrack at any time
@@ -146,4 +175,8 @@ Create an `assets/` folder inside any skill directory for reusable templates:
 └── assets/
     └── remediation-report-template.md
 ```
+
+## License
+
+MIT
 
