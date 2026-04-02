@@ -49,11 +49,11 @@ CTEM（Continuous Threat Exposure Management，持續威脅暴露管理）是 Ga
 
 | 指令 | 階段 | 功能 |
 |------|------|------|
-| `/ctem-scoping` | 1. 範圍界定 | 定義目標範圍與資產清冊 |
-| `/ctem-discovery` | 2. 發現 | 解析工具輸出、識別暴露 |
-| `/ctem-prioritization` | 3. 優先排序 | 依風險評分和排序暴露 |
-| `/ctem-validation` | 4. 驗證 | 驗證可利用性、過濾誤報 |
-| `/ctem-mobilization` | 5. 動員 | 產生修復計畫和行動項目 |
+| `/ctem-1-scoping` | 1. 範圍界定 | 定義目標範圍與資產清冊 |
+| `/ctem-2-discovery` | 2. 發現 | 解析工具輸出、識別暴露 |
+| `/ctem-3-prioritization` | 3. 優先排序 | 依風險評分和排序暴露 |
+| `/ctem-4-validation` | 4. 驗證 | 驗證可利用性、過濾誤報 |
+| `/ctem-5-mobilization` | 5. 動員 | 產生修復計畫和行動項目 |
 
 > **注意**：單獨執行階段時，你需要自行管理階段順序並更新 `ctem-state.md`。使用方式 A 時，`/ctem-flow` 會自動處理。
 
@@ -90,11 +90,11 @@ ctem-kit/
 │   ├── prompts/
 │   │   └── ctem-flow.prompt.md          # 流程控制器（工作階段生命週期、回溯、報告）
 │   └── skills/
-│       ├── ctem-scoping/SKILL.md        # 階段 1：範圍界定
-│       ├── ctem-discovery/SKILL.md      # 階段 2：發現
-│       ├── ctem-prioritization/SKILL.md # 階段 3：優先排序
-│       ├── ctem-validation/SKILL.md     # 階段 4：驗證
-│       └── ctem-mobilization/SKILL.md   # 階段 5：動員
+│       ├── ctem-1-scoping/SKILL.md        # 階段 1：範圍界定
+│       ├── ctem-2-discovery/SKILL.md      # 階段 2：發現
+│       ├── ctem-3-prioritization/SKILL.md # 階段 3：優先排序
+│       ├── ctem-4-validation/SKILL.md     # 階段 4：驗證
+│       └── ctem-5-mobilization/SKILL.md   # 階段 5：動員
 ├── reports/
 │   ├── README.md                        # 報告目錄說明
 │   ├── sessions/
@@ -112,11 +112,11 @@ ctem-kit/
 | `copilot-instructions.md` | 啟用閘門：CTEM 規則僅在使用者進入 CTEM 情境時生效。包含最精簡的全域規則，將細節委派給 flow 和 protocol。 | AI（自動載入） |
 | `ctem-state-protocol.instructions.md` | 狀態檔案格式規則：如何讀寫 `ctem-state.md`、先決條件檢查。不包含回溯邏輯或報告時機。 | AI（存取 `ctem-state.md` 時自動載入） |
 | `ctem-flow.prompt.md` | 流程控制器：工作階段生命週期、階段轉換、回溯檢查、啟動保護、報告產生。唯一入口。 | 使用者透過 `/ctem-flow` 呼叫 |
-| `ctem-scoping/SKILL.md` | 階段 1 邏輯。定義範圍、盤點資產、繪製攻擊面。 | 使用者透過 `/ctem-scoping` 呼叫 |
-| `ctem-discovery/SKILL.md` | 階段 2 邏輯。解析掃描輸出、識別暴露。 | 使用者透過 `/ctem-discovery` 呼叫 |
-| `ctem-prioritization/SKILL.md` | 階段 3 邏輯。評分和排序暴露。 | 使用者透過 `/ctem-prioritization` 呼叫 |
-| `ctem-validation/SKILL.md` | 階段 4 邏輯。透過三模組方法驗證可利用性（推理 / 生成 / 解析）。 | 使用者透過 `/ctem-validation` 呼叫 |
-| `ctem-mobilization/SKILL.md` | 階段 5 邏輯。產生修復計畫並追蹤修復進度。 | 使用者透過 `/ctem-mobilization` 呼叫 |
+| `ctem-1-scoping/SKILL.md` | 階段 1 邏輯。定義範圍、盤點資產、繪製攻擊面。 | 使用者透過 `/ctem-1-scoping` 呼叫 |
+| `ctem-2-discovery/SKILL.md` | 階段 2 邏輯。解析掃描輸出、識別暴露。 | 使用者透過 `/ctem-2-discovery` 呼叫 |
+| `ctem-3-prioritization/SKILL.md` | 階段 3 邏輯。評分和排序暴露。 | 使用者透過 `/ctem-3-prioritization` 呼叫 |
+| `ctem-4-validation/SKILL.md` | 階段 4 邏輯。透過三模組方法驗證可利用性（推理 / 生成 / 解析）。 | 使用者透過 `/ctem-4-validation` 呼叫 |
+| `ctem-5-mobilization/SKILL.md` | 階段 5 邏輯。產生修復計畫並追蹤修復進度。 | 使用者透過 `/ctem-5-mobilization` 呼叫 |
 | `ctem-state.md` | 即時工作階段狀態。追蹤已完成階段、發現摘要和回溯歷史。啟動新工作階段時重置（含保護機制）。 | AI 讀寫；使用者可檢視 |
 | `reports/sessions/TEMPLATE.md` | 輪次報告範本。每輪 CTEM 完成後複製並填寫。 | AI 產生；使用者可檢視 |
 | `reports/assets/TEMPLATE.md` | 資產檔案範本。每台機器一份，五階段全部完成後建立/更新。 | AI 更新；使用者可檢視 |
@@ -155,7 +155,7 @@ ctem-kit/
 在任何技能目錄中建立 `references/` 資料夾：
 
 ```
-.github/skills/ctem-validation/
+.github/skills/ctem-4-validation/
 ├── SKILL.md
 └── references/
     ├── attack-path-reasoning.md
@@ -170,7 +170,7 @@ ctem-kit/
 在任何技能目錄中建立 `assets/` 資料夾，放置可重複使用的範本：
 
 ```
-.github/skills/ctem-mobilization/
+.github/skills/ctem-5-mobilization/
 ├── SKILL.md
 └── assets/
     └── remediation-report-template.md

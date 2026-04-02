@@ -25,6 +25,14 @@
 | 4 | Validation | not_started | — | — |
 | 5 | Mobilization | not_started | — | — |
 
+## Phase Summaries
+
+<!-- 每個階段完成後，在此寫入該階段的結構化摘要 -->
+<!-- 格式：### <Phase> Summary，內含該階段的關鍵產出 -->
+<!-- 下游階段讀取此區塊即可取得前序階段資訊 -->
+
+<!-- Phase summaries will be added here as each phase completes -->
+
 ## Transition Log
 
 <!-- 每次階段轉換（包含回溯）記錄在此 -->

@@ -1,5 +1,5 @@
 ---
-name: ctem-discovery
+name: ctem-2-discovery
 description: "CTEM Phase 2: Discovery. Use when: identifying exposures, parsing scan tool outputs (nmap, nuclei, nessus), detecting vulnerabilities and misconfigurations, enumerating attack surface."
 ---
 

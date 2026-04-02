@@ -1,5 +1,5 @@
 ---
-name: ctem-prioritization
+name: ctem-3-prioritization
 description: "CTEM Phase 3: Prioritization. Use when: scoring exposure risk, analyzing business impact, ranking exposures by exploitability and context, determining remediation priority order."
 ---
 

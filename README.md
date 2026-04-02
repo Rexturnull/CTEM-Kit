@@ -49,11 +49,11 @@ You can run any phase independently as a slash command:
 
 | Command | Phase | What It Does |
 |---------|-------|-------------|
-| `/ctem-scoping` | 1. Scoping | Define target scope and asset inventory |
-| `/ctem-discovery` | 2. Discovery | Parse tool outputs, identify exposures |
-| `/ctem-prioritization` | 3. Prioritization | Score and rank exposures by risk |
-| `/ctem-validation` | 4. Validation | Verify exploitability, filter false positives |
-| `/ctem-mobilization` | 5. Mobilization | Generate remediation plans and action items |
+| `/ctem-1-scoping` | 1. Scoping | Define target scope and asset inventory |
+| `/ctem-2-discovery` | 2. Discovery | Parse tool outputs, identify exposures |
+| `/ctem-3-prioritization` | 3. Prioritization | Score and rank exposures by risk |
+| `/ctem-4-validation` | 4. Validation | Verify exploitability, filter false positives |
+| `/ctem-5-mobilization` | 5. Mobilization | Generate remediation plans and action items |
 
 > **Note**: When running phases individually, you are responsible for managing the phase order and updating `ctem-state.md`. The `/ctem-flow` prompt handles this for you in Option A.
 
@@ -90,11 +90,11 @@ ctem-kit/
 │   ├── prompts/
 │   │   └── ctem-flow.prompt.md          # Workflow controller (session lifecycle, backtrack, reports)
 │   └── skills/
-│       ├── ctem-scoping/SKILL.md        # Phase 1: Scoping
-│       ├── ctem-discovery/SKILL.md      # Phase 2: Discovery
-│       ├── ctem-prioritization/SKILL.md # Phase 3: Prioritization
-│       ├── ctem-validation/SKILL.md     # Phase 4: Validation
-│       └── ctem-mobilization/SKILL.md   # Phase 5: Mobilization
+│       ├── ctem-1-scoping/SKILL.md        # Phase 1: Scoping
+│       ├── ctem-2-discovery/SKILL.md      # Phase 2: Discovery
+│       ├── ctem-3-prioritization/SKILL.md # Phase 3: Prioritization
+│       ├── ctem-4-validation/SKILL.md     # Phase 4: Validation
+│       └── ctem-5-mobilization/SKILL.md   # Phase 5: Mobilization
 ├── reports/
 │   ├── README.md                        # Reports directory guide
 │   ├── sessions/
@@ -112,11 +112,11 @@ ctem-kit/
 | `copilot-instructions.md` | Activation gate: CTEM rules only apply when user enters CTEM context. Contains minimal global rules; delegates details to flow and protocol. | AI (auto-loaded) |
 | `ctem-state-protocol.instructions.md` | State file format rules: how to read/write `ctem-state.md`, prerequisite checks. Does NOT contain backtrack logic or report timing. | AI (auto-loaded when `ctem-state.md` is accessed) |
 | `ctem-flow.prompt.md` | Workflow controller: session lifecycle, phase transitions, backtrack checks, session start protection, and report generation. Single entry point. | User invokes via `/ctem-flow` |
-| `ctem-scoping/SKILL.md` | Phase 1 logic. Defines scope, inventories assets, maps attack surface. | User invokes via `/ctem-scoping` |
-| `ctem-discovery/SKILL.md` | Phase 2 logic. Parses scan outputs, identifies exposures. | User invokes via `/ctem-discovery` |
-| `ctem-prioritization/SKILL.md` | Phase 3 logic. Scores and ranks exposures. | User invokes via `/ctem-prioritization` |
-| `ctem-validation/SKILL.md` | Phase 4 logic. Verifies exploitability using three-module approach (reasoning / generation / parsing). | User invokes via `/ctem-validation` |
-| `ctem-mobilization/SKILL.md` | Phase 5 logic. Generates fix plans and tracks remediation. | User invokes via `/ctem-mobilization` |
+| `ctem-1-scoping/SKILL.md` | Phase 1 logic. Defines scope, inventories assets, maps attack surface. | User invokes via `/ctem-1-scoping` |
+| `ctem-2-discovery/SKILL.md` | Phase 2 logic. Parses scan outputs, identifies exposures. | User invokes via `/ctem-2-discovery` |
+| `ctem-3-prioritization/SKILL.md` | Phase 3 logic. Scores and ranks exposures. | User invokes via `/ctem-3-prioritization` |
+| `ctem-4-validation/SKILL.md` | Phase 4 logic. Verifies exploitability using three-module approach (reasoning / generation / parsing). | User invokes via `/ctem-4-validation` |
+| `ctem-5-mobilization/SKILL.md` | Phase 5 logic. Generates fix plans and tracks remediation. | User invokes via `/ctem-5-mobilization` |
 | `ctem-state.md` | Live session state. Tracks which phases are done, findings summaries, and backtrack history. Reset when starting a new session (with protection). | AI reads/writes; user can inspect |
 | `reports/sessions/TEMPLATE.md` | Session report template. Copied and filled after each CTEM round completes. | AI generates; user can inspect |
 | `reports/assets/TEMPLATE.md` | Asset profile template. One per machine, created/updated when all five phases complete. | AI updates; user can inspect |
@@ -155,7 +155,7 @@ Edit the corresponding `SKILL.md` file under `.github/skills/ctem-<phase>/`. Eac
 Create a `references/` folder inside any skill directory:
 
 ```
-.github/skills/ctem-validation/
+.github/skills/ctem-4-validation/
 ├── SKILL.md
 └── references/
     ├── attack-path-reasoning.md
@@ -170,7 +170,7 @@ Reference them from `SKILL.md` using relative links: `[Attack Path Reasoning](./
 Create an `assets/` folder inside any skill directory for reusable templates:
 
 ```
-.github/skills/ctem-mobilization/
+.github/skills/ctem-5-mobilization/
 ├── SKILL.md
 └── assets/
     └── remediation-report-template.md

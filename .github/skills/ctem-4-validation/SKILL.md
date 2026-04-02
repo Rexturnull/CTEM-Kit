@@ -1,5 +1,5 @@
 ---
-name: ctem-validation
+name: ctem-4-validation
 description: "CTEM Phase 4: Validation. Use when: verifying exploitability of discovered exposures, analyzing attack paths, generating validation procedures, filtering false positives, classifying findings as confirmed or dismissed."
 ---
 

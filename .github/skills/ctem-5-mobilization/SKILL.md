@@ -1,5 +1,5 @@
 ---
-name: ctem-mobilization
+name: ctem-5-mobilization
 description: "CTEM Phase 5: Mobilization. Use when: generating remediation plans, assigning fix actions to teams, creating resolution timelines, tracking remediation progress."
 ---
 
