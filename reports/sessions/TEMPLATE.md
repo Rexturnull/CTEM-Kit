@@ -35,13 +35,17 @@
 ## Exposure Summary
 
 <!-- 本輪發現的所有暴露，含嚴重性與對應資產 -->
+<!-- Severity = Raw Severity，由 Discovery (Phase 2) 填入 -->
+<!-- CVSS = CVSS 分數，由 Prioritization (Phase 3) 填入（若可用） -->
+<!-- Status: 由 Discovery (Phase 2) 設定初始值，Validation (Phase 4) 可能更新 -->
 
 | # | Exposure ID | Asset ID | Title | Severity | CVSS | Status | Notes |
 |---|-------------|----------|-------|----------|------|--------|-------|
 | | | | | | | | |
 
-<!-- Status: new / known / escalated / mitigated / false-positive -->
+<!-- Status: new / known / escalated / reopened / mitigated / false-positive -->
 <!-- escalated = 本輪嚴重性比前輪升高 -->
+<!-- reopened = 前輪已 mitigated 但本輪再次偵測到 -->
 
 ## Risk Changes Detected
 

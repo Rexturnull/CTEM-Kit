@@ -32,12 +32,15 @@
 ## Exposure Registry
 
 <!-- 此資產歷來所有被發現的暴露，持續累積 -->
+<!-- Severity History = Raw Severity（工具原始評級），由 Discovery (Phase 2) 寫入 -->
+<!-- Adjusted Severity = 業務風險調整後的等級，由 Prioritization (Phase 3) 寫入 -->
 
-| # | Exposure ID | Title | First Seen (Session) | Last Seen (Session) | Severity History | Current Status |
-|---|-------------|-------|----------------------|---------------------|------------------|----------------|
-| | | | | | | |
+| # | Exposure ID | Title | First Seen (Session) | Last Seen (Session) | Severity History | Adjusted Severity | Current Status |
+|---|-------------|-------|----------------------|---------------------|------------------|-------------------|----------------|
+| | | | | | | | |
 
-<!-- Severity History 範例：Low (S-001) → Medium (S-002) → High (S-003) -->
+<!-- Severity History 範例：low (S-001) → medium (S-002) → high (S-003) — 此為 Raw Severity 記錄 -->
+<!-- Adjusted Severity 範例：high (S-002) — 由 Prioritization 根據業務影響評估後設定 -->
 <!-- Current Status: open / mitigated / accepted / reopened / false-positive -->
 
 ## Risk Trend Log

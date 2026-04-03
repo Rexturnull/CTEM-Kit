@@ -172,7 +172,7 @@ Present this checklist to the user before finishing. Every box must be checked.
 - [ ] OS / Platform confirmed
 - [ ] Role / Service defined
 - [ ] Business Criticality assessed (CIA triad)
-- [ ] Attack surface boundary defined (In-Scope / Out-of-Scope)
+- [ ] Attack surface boundary defined (In-Scope Services must list at least one port/protocol; Out-of-Scope documented)
 - [ ] Asset profile created or updated (reports/assets/)
 - [ ] Scoping Summary written to ctem-state.md
 ```

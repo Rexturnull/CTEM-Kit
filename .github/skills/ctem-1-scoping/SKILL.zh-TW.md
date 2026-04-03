@@ -171,7 +171,7 @@ Owner / Team 若使用者未提供可留空 — 不強制詢問。
 - [ ] 已確認作業系統 / 平台
 - [ ] 已定義角色 / 服務
 - [ ] 已評估業務關鍵性（CIA 三維度）
-- [ ] 已界定攻擊面邊界（In-Scope / Out-of-Scope）
+- [ ] 已界定攻擊面邊界（In-Scope Services 必須列出至少一個端口/協定；Out-of-Scope 已記錄）
 - [ ] 已建立或更新資產檔案（reports/assets/）
 - [ ] 已將 Scoping Summary 寫入 ctem-state.md
 ```

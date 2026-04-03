@@ -10,21 +10,23 @@ description: "CTEM 報告產生指南。用途：五階段全部完成、使用�
 
 1. 複製 `reports/sessions/TEMPLATE.md` 為 `reports/sessions/YYYY-MM-DD-<session-id>.md`
 2. 從 `ctem-state.md` 的工作階段資料填入所有區塊
-3. 寫入前先與使用者確認報告內容
+3. **Previous Session**：讀取 `reports/assets/<asset>.md` → `Last Assessed` 取得前一輪 Session ID。若該資產僅在當前 session 被評估（First Seen = Last Assessed），則設為 `N/A`。
+4. 寫入前先與使用者確認報告內容
 
 ## 資產檔案更新
 
-資產檔案在 Scoping（Step 2）時已**建立**基本身份欄位。本節在五階段全部完成後更新 **Exposure Registry、Risk Trend Log 和 Current Risk Summary** 欄位。
+資產檔案在 Scoping（Step 2）時已**建立**基本身份欄位。**Exposure Registry**（Raw Severity、暴露狀態）由 Discovery (Phase 2) 寫入與維護。本節在五階段全部完成後更新 **Risk Trend Log 和 Current Risk Summary** 欄位。
+
+詳細欄位寫入權責請參見 `reports/README.md` 中的**欄位寫入權責表**。
 
 報告產生後，對每台範圍內資產：
 
 1. 若 `reports/assets/<asset>.md` 不存在，從 `reports/assets/TEMPLATE.md` 建立
 2. 更新以下區塊：
-   - **Exposure Registry**：新增或更新暴露項目
    - **Risk Trend Log**：新增本輪的一列記錄
-   - **Current Risk Summary**：反映最新評估結果
-3. 在 `Severity History` 記錄嚴重性變化（例 `Low (S-001) → High (S-002)`）
-4. 每個資產檔案寫入前先與使用者確認
+   - **Current Risk Summary**：反映最新評估結果（Overall Risk Level、Open Exposures 數量、Highest Severity、Trend）
+   - Exposure Registry 中的 **Adjusted Severity** 欄位：更新為 Prioritization 的最終嚴重性（若 Phase 3 尚未設定）
+3. 每個資產檔案寫入前先與使用者確認
 
 ## 報告完成後
 

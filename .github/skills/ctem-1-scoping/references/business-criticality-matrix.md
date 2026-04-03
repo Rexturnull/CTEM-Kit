@@ -109,6 +109,8 @@ When exactly one CIA dimension is rated High, apply these qualifiers to determin
 | **Moderate** | Moderate | Compromise produces a serious adverse effect; noticeable degradation but core missions unaffected | Development environments, monitoring systems, internal tools |
 | **Low** | Low | Compromise produces a limited adverse effect; minimal operational impact | Test machines, sandboxes, decommissioned-but-online services |
 
+**Note on NIST SP 800-30's 5-level vs. this matrix's 4-level scale:** NIST SP 800-30 Rev. 1 Table H-3 defines five impact levels (Very High through Very Low). This matrix intentionally omits the **Very Low** level. Rationale: in a single-host CTEM assessment context, a host where all three CIA dimensions are rated Low already represents the minimum meaningful assessment target. A "Very Low" host — one where compromise has negligible adverse effect across all dimensions — would not warrant inclusion in a CTEM session at all; the decision to assess a host inherently implies at least a Low impact level. This 4-level simplification does not lose fidelity for actionable risk categorization.
+
 ## Recording the Result
 
 Write the following into the asset profile (`reports/assets/<id>.md`):

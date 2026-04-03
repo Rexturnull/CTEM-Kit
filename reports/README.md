@@ -59,3 +59,22 @@ Session Report (S-002)          Asset Profile (ASSET-001)
 | Session ID | `S-XXX` | `S-001`、`S-002` |
 | Asset ID | `ASSET-XXX` | `ASSET-001` |
 | Exposure ID | `EXP-XXX` | `EXP-001` |
+
+## 欄位寫入權責表（Field Ownership）
+
+以下表格明確定義 Asset Profile (`reports/assets/`) 中每個區塊由哪個階段負責寫入，避免重複或衝突。
+
+| Asset Profile 區塊 | 欄位 | 寫入者（Phase） | 說明 |
+|---------------------|------|-----------------|------|
+| **Asset Identity** | Asset ID, Hostname, IP, OS, Role | Phase 1 (Scoping) | 首次建立或更新 |
+| **Asset Identity** | Business Criticality | Phase 1 (Scoping) | CIA 三維評估結果 |
+| **Asset Identity** | First Seen | Phase 1 (Scoping) | 僅首次建立時寫入 |
+| **Asset Identity** | Last Assessed | Phase 2 (Discovery) | 每輪更新 |
+| **Exposure Registry** | Exposure ID, Title, First/Last Seen, Severity History, Current Status | Phase 2 (Discovery) | 新增、更新暴露記錄 |
+| **Exposure Registry** | Adjusted Severity | Phase 3 (Prioritization) | 業務風險調整後的等級 |
+| **Current Risk Summary** | Overall Risk Level, Open Exposures, Highest Severity, Trend | Phase 3 (Prioritization) | 每輪評估後更新 |
+| **Risk Trend Log** | 每輪一列 | Report Generation | 五階段完成後寫入 |
+| **Remediation History** | Action Taken, Verified | Phase 5 (Mobilization) | 修復行動紀錄 |
+| **Notes** | CIA Assessment comment | Phase 1 (Scoping) | HTML 註解記錄評估詳情 |
+
+> **規則**：每個欄位僅由表中指定的階段寫入。其他階段可**讀取**但不可修改非其職責的欄位。
