@@ -33,9 +33,9 @@ Gartner, Inc. *Implement a Continuous Threat Exposure Management (CTEM) Program*
 
 | Aspect | Gartner Definition | This Implementation |
 |--------|--------------------|---------------------|
-| **Objective** | Rank exposures not just by CVSS severity, but by business impact, exploitability context, and compensating controls | Planned — will incorporate Business Criticality from Scoping and Raw Severity from Discovery |
-| **Key Differentiator** | Goes beyond traditional vulnerability severity to include business context, threat intelligence, and asset criticality | Design separates Raw Severity (Discovery) from Adjusted Severity (Prioritization) to maintain this distinction |
-| **Output** | Prioritized exposure list with risk scores | Planned — will write Adjusted Severity to Asset Profile and Prioritization Summary to `ctem-state.md` |
+| **Objective** | Rank exposures not just by CVSS severity, but by business impact, exploitability context, and compensating controls | Three-layer assessment: Risk Matrix (Raw Severity × Business Criticality) → Contextual Adjustment (Exploitability ±1, Compensating Controls ±1, net capped at ±1) → Adjusted Severity per exposure |
+| **Key Differentiator** | Goes beyond traditional vulnerability severity to include business context, threat intelligence, and asset criticality | Separates Raw Severity (Discovery) from Adjusted Severity (Prioritization); exploitability classified as `confirmed-in-wild` / `poc-available` / `theoretical`; 7-item structured compensating controls checklist with automatic control-to-exposure mapping |
+| **Output** | Prioritized exposure list with risk scores | Prioritized Exposure List with Adjusted Severity, Exploitability, Controls Applied, and Rationale written to Asset Profile (`Adjusted Severity` + `Current Risk Summary`) and Prioritization Summary in `ctem-state.md` |
 
 ### Phase 4 — Validation
 

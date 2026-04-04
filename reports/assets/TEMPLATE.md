@@ -13,7 +13,7 @@
 | IP Address | |
 | OS / Platform | |
 | Role / Service | <!-- 例如：Web Server、DB Server、Domain Controller --> |
-| Business Criticality | <!-- critical / high / medium / low --> |
+| Business Criticality | <!-- critical / high / moderate / low --> |
 | Owner / Team | |
 | First Seen | <!-- 首次納入 CTEM 的 Session ID 與日期 --> |
 | Last Assessed | <!-- 最近一次評估的 Session ID 與日期 --> |
