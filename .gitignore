@@ -1,0 +1,12 @@
+# ── Thesis / Paper (not for public repo) ──────────────────────────
+Paper/
+
+# ── Chinese (zh-TW) variants ──────────────────────────────────────
+# Exclude all *.zh-TW.* files anywhere in the tree …
+*.zh-TW.*
+# … except the root-level Chinese README
+!README.zh-TW.md
+
+# ── OS / Editor noise ─────────────────────────────────────────────
+.DS_Store
+*.swp

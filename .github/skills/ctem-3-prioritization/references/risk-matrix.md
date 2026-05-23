@@ -130,6 +130,8 @@ Adjusted Severity = clamp(Base + Net, info, critical)   ← stay within range
 - If the exposure Type is `vulnerability` or `misconfiguration` → **floor at `low`** (these types have inherent exploitable risk that `info` would misrepresent). Record "floor applied — vulnerability/misconfiguration cannot be demoted to info" in the Rationale.
 - If the exposure Type is `information-disclosure` or `outdated-software` → allow demotion to `info` (these types may genuinely be informational when adjusted for context). Record the demotion reason in the Rationale.
 
+> **Cross-phase applicability**: This formula (including the floor rule above) applies to **all phases** that compute Adjusted Severity. This includes Phase 3 (Prioritization) primary assessment and Phase 4 (Validation) in-place registration of newly discovered exposures.
+
 ---
 
 ## Part 3 — Compensating Controls Reference

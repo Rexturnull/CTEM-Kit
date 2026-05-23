@@ -36,16 +36,36 @@
 
 <!-- 本輪發現的所有暴露，含嚴重性與對應資產 -->
 <!-- Severity = Raw Severity，由 Discovery (Phase 2) 填入 -->
-<!-- CVSS = CVSS 分數，由 Prioritization (Phase 3) 填入（若可用） -->
-<!-- Status: 由 Discovery (Phase 2) 設定初始值，Validation (Phase 4) 可能更新 -->
+<!-- Adjusted Severity = 業務風險調整後的等級，由 Prioritization (Phase 3) 填入 -->
+<!-- Validation Status = 由 Validation (Phase 4) 填入 -->
+<!-- Status: 由 Discovery (Phase 2) 設定初始值，Validation (Phase 4) 更新 -->
 
-| # | Exposure ID | Asset ID | Title | Severity | CVSS | Status | Notes |
-|---|-------------|----------|-------|----------|------|--------|-------|
-| | | | | | | | |
+| # | Exposure ID | Asset ID | Title | Severity | Adjusted Severity | Validation Status | Status | Notes |
+|---|-------------|----------|-------|----------|-------------------|-------------------|--------|-------|
+| | | | | | | | | |
 
-<!-- Status: new / known / escalated / reopened / mitigated / false-positive -->
+<!-- Status: open / confirmed / false-positive / mitigated / accepted / reopened -->
+<!-- Validation Status: confirmed / false-positive / inconclusive / — (未驗證) -->
 <!-- escalated = 本輪嚴重性比前輪升高 -->
 <!-- reopened = 前輪已 mitigated 但本輪再次偵測到 -->
+
+## Newly Discovered During Validation
+
+<!-- 驗證過程中新發現的暴露（非前序階段掛單的暴露） -->
+
+| # | Exposure ID | Asset ID | Title | Type | Raw Severity | Adjusted Severity | Source | Validation Status |
+|---|-------------|----------|-------|------|-------------|-------------------|--------|-------------------|
+| | | | | | | | | |
+
+## Attack Paths Identified
+
+<!-- 攻擊路徑：將多個已確認暴露串聯為一条利用鏈 -->
+
+| # | Path ID | Chain (Exposure IDs) | Description | Combined Impact | Status |
+|---|---------|---------------------|-------------|-----------------|--------|
+| | | | | | |
+
+<!-- Status: confirmed / partial / theoretical -->
 
 ## Risk Changes Detected
 
