@@ -58,7 +58,10 @@ Before starting the Discovery workflow:
    - Business Criticality (context reference)
 5. Read the Session ID from `ctem-state.md` → `Session Info`.
 6. Read `reports/assets/<id>.md` → Exposure Registry to determine if this is a first session or returning session.
-7. Validate that `In-Scope Services` in the Scoping Summary is **not empty**. If it is empty → **STOP** and recommend backtracking to Scoping to define the service boundary. Discovery cannot perform meaningful service comparison without this baseline.
+7. Validate that `In-Scope Services` in the Scoping Summary is **not empty**. If it is empty → **STOP** and instruct the user:
+   > *"In-Scope Services is empty — Discovery cannot proceed without a defined service boundary. Please run:*
+   > `/ctem-flow Go back to Scoping`
+   > *to formally update the scope."*
 
 ### First-Session Detection
 
@@ -72,9 +75,18 @@ If the Exposure Registry in the asset file is empty (no existing exposure record
 
 ### Step 0 — Scan Planning
 
-Before asking for scan results, help the user understand what scans to run and why. Read the Scoping Summary and recommend a tailored scan plan.
+**Read [tool-commands.md](./references/tool-commands.md)** before proceeding.
 
-**Read [tool-commands.md](./references/tool-commands.md)** for the full command reference, then recommend based on the target:
+#### Input Detection (evaluate FIRST)
+
+Check the user's message for scan data:
+
+- **Scan output present** (pasted terminal output, or a file path to scan results): Skip the rest of Step 0 and proceed directly to Step 1 for parsing.
+- **No scan output present** (user only said "start Discovery", "next", or similar without data): You MUST output tailored scan commands below before proceeding. Do NOT skip to completion or summary — there is nothing to analyze yet.
+
+#### Command Recommendation (only when no scan output present)
+
+Read the Scoping Summary to build a tailored scan plan:
 
 1. **Always recommend**: nmap service + vuln scan (`-sV -sC --script vuln`) targeting In-Scope ports.
 2. **Always recommend**: Nuclei scan against the target host.
@@ -83,8 +95,10 @@ Before asking for scan results, help the user understand what scans to run and w
 5. **Web role**: if the host's Role/Service involves web serving, recommend Nuclei web-specific templates.
 6. **Output format guidance**: suggest output flags that produce parseable results (e.g., `nmap -oN`, `nuclei -jsonl`).
 
-Present the recommended commands clearly and tell the user:
+Output the commands verbatim (with the target IP and port list filled in from Scoping Summary) and tell the user:
 > *"Please run these scans and share the results — paste the output or provide the file path. You can run all of them or just the ones available to you. If you have results from other tools, share those too and I'll process them as manual findings."*
+
+**WAIT** for the user to provide results before proceeding to Step 1.
 
 The user may:
 - Run all recommended scans → proceed normally
@@ -120,7 +134,8 @@ Present the unexpected services and ask:
 > 2. **Exclude** — confirm it's out of scope (I'll skip it)
 > 3. **Backtrack** — return to Scoping to formally adjust the boundary"
 
-Record the user's decision for each service. Discovery does **not** modify the Scoping Summary directly — if the user chooses option 3, inform them to invoke ctem-flow for a formal backtrack.
+Record the user's decision for each service. Discovery does **not** modify the Scoping Summary directly — if the user chooses option 3, instruct them:
+> *Please run:* `/ctem-flow Go back to Scoping` *to formally adjust the boundary.*
 
 For services the user chooses to include, mark them as `In-Scope = User-added` in the Open Services table.
 
@@ -326,6 +341,7 @@ Once all items are satisfied:
 
 Example closing message:
 > **Discovery 完成。** 共發現 N 項暴露（critical: X, high: X, medium: X, low: X, info: X）。Exposure Registry 與 Discovery Summary 已寫入。準備好後可進入 Phase 3 — Prioritization。
+> 請輸入 `/ctem-flow Phase complete, next step?` 進行階段轉換。
 
 ---
 

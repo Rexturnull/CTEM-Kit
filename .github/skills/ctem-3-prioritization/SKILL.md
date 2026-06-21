@@ -191,16 +191,25 @@ The user can modify the Exploitability classification or controls mapping for in
 
 **Rationale field**: Every exposure must have a Rationale recording the adjustment derivation, e.g.: `Base=high, +1 confirmed-in-wild, -1 WAF, net 0 → Adjusted high`
 
+**Business Justification field**: Every exposure that undergoes adjustment (Raw ≠ Adjusted) must also have a one-sentence business justification that:
+1. References the impacted CIA dimension (e.g., "Impacts Confidentiality")
+2. Connects to the specific business context (e.g., "This service hosts customer data")
+3. Where applicable, states relative priority reasoning (e.g., "Prioritized over EXP-003 as it is directly internet-facing")
+
+Exposures with no adjustment (Raw = Adjusted) may have a brief justification or "No adjustment needed."
+
+Example: `Impacts Integrity — anonymous write access can tamper shared files; prioritized over EXP-005 as this service has no ACL protection`
+
 #### Step 2c — Confirm Final Adjusted Severity
 
 After all adjustments, present the final prioritized list for user confirmation:
 
 > *"Final Adjusted Severity results:"*
 >
-> | Priority | Exposure ID | Title | Raw Severity | Adjusted Severity | Exploitability | Controls | Rationale |
-> |----------|-------------|-------|-------------|-------------------|----------------|----------|-----------|
-> | 1 | EXP-001 | ... | high | critical | confirmed-in-wild | None | Base=critical, +1 exploit, net +1→capped critical |
-> | 2 | EXP-002 | ... | medium | low | poc-available | WAF | Base=medium, 0 exploit, -1 WAF, net -1 |
+> | Priority | Exposure ID | Title | Raw Severity | Adjusted Severity | Exploitability | Controls | Rationale | Business Justification |
+> |----------|-------------|-------|-------------|-------------------|----------------|----------|-----------|----------------------|
+> | 1 | EXP-001 | ... | high | critical | confirmed-in-wild | None | Base=critical, +1 exploit, net +1→capped critical | Impacts Confidentiality — customer data on internet-facing service |
+> | 2 | EXP-002 | ... | medium | low | poc-available | WAF | Base=medium, 0 exploit, -1 WAF, net -1 | Impacts Confidentiality — ACL limits exposure, low business impact |
 >
 > *(Sorted by Adjusted Severity descending; ties broken by Raw Severity descending)*
 
@@ -294,10 +303,10 @@ Write under `## Phase Summaries` as `### Prioritization Summary`. If a previous 
 
 #### Prioritized Exposure List
 
-| Priority | Exposure ID | Title | Raw Severity | Adjusted Severity | Exploitability | Controls Applied | Rationale |
-|----------|-------------|-------|-------------|-------------------|----------------|-----------------|-----------|
-| 1 | EXP-001 | Apache Path Traversal | high | critical | confirmed-in-wild (+1) | None (0) | Base=critical, net +1→capped critical |
-| 2 | EXP-002 | SSH Weak Ciphers | medium | low | theoretical (-1) | ACL (-1) | Base=medium, net -1 (capped) |
+| Priority | Exposure ID | Title | Raw Severity | Adjusted Severity | Exploitability | Controls Applied | Rationale | Business Justification |
+|----------|-------------|-------|-------------|-------------------|----------------|-----------------|-----------|----------------------|
+| 1 | EXP-001 | Apache Path Traversal | high | critical | confirmed-in-wild (+1) | None (0) | Base=critical, net +1→capped critical | Impacts Confidentiality — this service hosts customer data and is internet-facing; prioritized over EXP-002 as no compensating controls |
+| 2 | EXP-002 | SSH Weak Ciphers | medium | low | theoretical (-1) | ACL (-1) | Base=medium, net -1 (capped) | Impacts Confidentiality — but ACL restricts access sources, limiting actual business impact |
 
 #### Risk Changes (Cross-Session)
 
@@ -364,6 +373,7 @@ Once all items are satisfied:
 
 Example closing message:
 > **Prioritization 完成。** 共評估 N 項暴露（Adjusted Severity — critical: X, high: X, medium: X, low: X, info: X）。Overall Risk Level: \<level\>。Prioritized Exposure List 與 Prioritization Summary 已寫入。準備好後可進入 Phase 4 — Validation。
+> 請輸入 `/ctem-flow Phase complete, next step?` 進行階段轉換。
 
 ---
 

@@ -86,8 +86,23 @@ Confirm the single target host:
 | OS / Platform | yes | user / `nmap -O` |
 | Role / Service | yes | user description |
 
-If the user has not yet run host-discovery tools, suggest commands from [tool-commands.md](./references/tool-commands.md).
-Parse any pasted output (nmap, etc.) to auto-fill fields.
+**Recon gate — REQUIRED before proceeding:**
+
+Read [tool-commands.md](./references/tool-commands.md) now.
+
+Check whether the user has already pasted scan output (nmap, etc.) in their message:
+
+- **No scan output present**: Output the following commands verbatim and instruct the user to run them, then paste the results back before continuing. Do NOT proceed to Step 2 until output is received.
+
+  ```bash
+  # OS detection + top-1000 port scan
+  sudo nmap -O -sV --top-ports 1000 <target_ip>
+
+  # Hostname resolution (optional but recommended)
+  nslookup <target_ip>
+  ```
+
+- **Scan output present**: Parse it to auto-fill all fields in the table above. Skip issuing commands.
 
 ### Step 2 — Asset Registration
 
@@ -184,6 +199,7 @@ Once all items are satisfied:
 
 Example closing message:
 > **Scoping 完成。** 資產檔案與 Scoping Summary 已寫入。準備好後可進入 Phase 2 — Discovery。
+> 請輸入 `/ctem-flow Phase complete, next step?` 進行階段轉換。
 
 ---
 
@@ -191,5 +207,5 @@ Example closing message:
 
 | File | Load when | Priority |
 |------|-----------|----------|
-| [tool-commands.md](./references/tool-commands.md) | User needs guidance on which commands to run for host discovery or service enumeration | Read when user asks for scan commands or doesn't know what to run |
+| [tool-commands.md](./references/tool-commands.md) | **MUST read at the start of Step 1** — contains host discovery and service enumeration commands to give the user if no scan output is present | **Required** at Step 1 |
 | [business-criticality-matrix.md](./references/business-criticality-matrix.md) | **MUST read before starting Step 3** — contains the CIA questionnaire, rating criteria, and derivation logic | **Required** before Step 3 |

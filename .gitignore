@@ -1,6 +1,13 @@
 # ── Thesis / Paper (not for public repo) ──────────────────────────
 Paper/
 
+# ── Experiment data (not for public repo) ─────────────────────────
+experiments*/
+new_experiment/
+
+# ── Skill generation prompts (internal only) ──────────────────────
+GenSkillPrompt/
+
 # ── Chinese (zh-TW) variants ──────────────────────────────────────
 # Exclude all *.zh-TW.* files anywhere in the tree …
 *.zh-TW.*

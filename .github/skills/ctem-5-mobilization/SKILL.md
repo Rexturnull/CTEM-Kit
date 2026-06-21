@@ -478,6 +478,7 @@ Example closing message:
 > **Mobilization 完成。** 共規劃 N 項修復行動（patch: X, configure: X, harden: X, investigate: X）。N 項已在 session 中驗證修復。M 項風險接受。P 條攻擊路徑已識別 chain-breaker。Overall Risk Level: \<level\>。Mobilization Summary 已寫入。
 >
 > **五階段全部完成。** 準備好後可進行 Report Generation 以建立 Session Report。
+> 請輸入 `/ctem-flow summary` 產生 Session Report。
 
 ---
 

@@ -149,8 +149,8 @@ REPEAT:
      a. Mark completed tasks.
      b. If NEW FINDING flagged:
         - Minor (new vuln on known service) → in-place registration (see below).
-        - Major (new attack surface outside Scoping boundary) → alert user,
-          recommend backtrack to Discovery.
+        - Major (new attack surface outside Scoping boundary) → alert user
+          and instruct: *Please run:* `/ctem-flow Go back to Discovery` *to register the new attack surface.*
      c. If a new exposure is confirmed → check for attack path opportunities.
      d. Select next task(s):
         - Tasks with no dependencies → list as parallelizable.
@@ -209,7 +209,10 @@ When VPM flags a NEW FINDING that qualifies as major:
 | New service/port not in Scoping's In-Scope Services | Hidden admin panel on non-standard port |
 | Discovery affects Scoping business boundary | Target host can reach other internal network segments |
 
-Action: Alert the user and recommend backtrack to Discovery. The user may accept (triggering a backtrack) or override (continue validation, noting the finding).
+Action: Alert the user and instruct:
+> *New attack surface detected outside Scoping boundary. Please run:* `/ctem-flow Go back to Discovery` *to formally register these findings.*
+
+The user may accept (triggering a backtrack) or override (continue validation, noting the finding).
 
 ### Step 3 — Attack Path Consolidation
 
@@ -333,7 +336,7 @@ If the Scoping Summary includes a non-empty `Regulatory Context`, reflect this i
 | Classification | Criteria | Action |
 |---------------|----------|--------|
 | **Minor** | New vulnerability on a known/in-scope service | In-place registration with full Risk Matrix scoring |
-| **Major** | New service or attack surface outside Scoping boundary | Alert user, recommend backtrack to Discovery |
+| **Major** | New service or attack surface outside Scoping boundary | Alert user, instruct: `/ctem-flow Go back to Discovery` |
 
 ---
 
@@ -366,10 +369,15 @@ Once all items are satisfied:
 
 1. Update `ctem-state.md`: set the Validation row in **Phase Status** to `completed` and fill the `Key Findings Summary` and `Last Updated` columns.
 2. Append a Transition Log entry.
-3. Inform the user that Validation is complete and they can proceed to Phase 5.
+3. **Revalidation check**: If the ratio of `inconclusive` to total validated exposures is ≥ 50%, or if there are `inconclusive` items with high/critical adjusted severity, suggest revalidation before proceeding:
+   > *"There are X inconclusive exposures (including N high/critical). Consider running:*
+   > `/ctem-flow Run Validation again`
+   > *to retry with adjusted approaches, or proceed to Mobilization if acceptable."*
+4. If revalidation is not needed (or user declines), inform the user that Validation is complete and they can proceed to Phase 5.
 
 Example closing message:
 > **Validation 完成。** 共驗證 N 項暴露（confirmed: X, false-positive: X, inconclusive: X）。驗證期間新發現 M 項暴露。識別 P 條攻擊路徑。Updated Overall Risk Level: \<level\>。Validation Summary 已寫入。準備好後可進入 Phase 5 — Mobilization。
+> 請輸入 `/ctem-flow Phase complete, next step?` 進行階段轉換。
 
 ---
 
